@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A3 QC AI Platform — Enterprise AI System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkbg: '#0B0F19',
+                        cardbg: '#1E293B',
+                        accent: '#38BDF8',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-darkbg text-slate-100 min-h-screen flex flex-col font-sans">
+
+    <!-- Top Navigation Bar -->
+    <header class="border-b border-slate-800 bg-slate-900/50 backdrop-blur sticky top-0 z-50 px-6 py-4 flex justify-between items-center">
+        <div class="flex items-center space-x-3">
+            <span class="text-2xl">⚡</span>
+            <h1 class="text-xl font-bold tracking-wider text-accent">A3 QC AI Platform</h1>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="text-xs text-slate-400 hidden sm:block text-right">
+                <p class="font-semibold text-slate-300">Punjab College — Quaid Campus (ICS • CQ-31)</p>
+                <p>Supervisor: Prof. Naveed Asif | Team 48</p>
+            </div>
+            <input type="hidden" id="apiKey" value="server-managed">
+        </div>
+    </header>
+
+    <!-- Main Content Layout -->
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- Sidebar Module Navigation -->
+        <aside class="w-72 bg-slate-900/80 border-r border-slate-800 p-4 hidden md:flex flex-col space-y-2">
+            <p class="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-2 px-2">AI Modules</p>
+            <button onclick="switchModule('chat')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition bg-sky-500/10 text-accent border border-sky-500/30 flex items-center space-x-3" id="btn-chat">
+                <span>💬</span> <span>Interactive Chat Assistant</span>
+            </button>
+            <button onclick="switchModule('learning')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3" id="btn-learning">
+                <span>📚</span> <span>Smart Learning Assistant</span>
+            </button>
+            <button onclick="switchModule('career')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3" id="btn-career">
+                <span>🎯</span> <span>Career Guidance System</span>
+            </button>
+            <button onclick="switchModule('eco')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3" id="btn-eco">
+                <span>🌱</span> <span>Eco Vision (Waste Classifier)</span>
+            </button>
+            <button onclick="switchModule('budget')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3" id="btn-budget">
+                <span>💰</span> <span>Budget & Expense Advisor</span>
+            </button>
+            <button onclick="switchModule('accessibility')" class="mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3" id="btn-accessibility">
+                <span>🌐</span> <span>Accessibility & Language</span>
+            </button>
+        </aside>
+
+        <!-- Dynamic Content Area -->
+        <main class="flex-1 p-6 overflow-y-auto max-w-5xl mx-auto">
+            
+            <!-- CHAT MODULE -->
+            <div id="module-chat" class="space-y-6">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">AI Interactive Chat Assistant</h2>
+                    <p class="text-sm text-slate-400">Where should we start? Ask anything or consult your AI partner below.</p>
+                </div>
+                <div id="chatBox" class="bg-cardbg border border-slate-700/60 rounded-2xl p-4 h-96 overflow-y-auto space-y-4 shadow-inner">
+                    <div class="bg-slate-800/80 p-3 rounded-xl text-sm max-w-[80%]">
+                        👋 Hello! I am your A3 QC AI Assistant. Type your query below to get started.
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <input type="text" id="chatInput" placeholder="Where should we start? Type your query..." class="flex-1 bg-cardbg border border-slate-700 rounded-xl px-4 py-3 focus:outline-none focus:border-accent text-white">
+                    <button onclick="sendChatMessage()" class="bg-accent text-slate-950 font-bold px-6 py-3 rounded-xl hover:bg-sky-400 transition">Send</button>
+                </div>
+            </div>
+
+            <!-- SMART LEARNING ASSISTANT -->
+            <div id="module-learning" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">📚 AI Smart Learning Assistant</h2>
+                    <p class="text-sm text-slate-400">Generate quizzes, break down complex concepts, and build custom study plans.</p>
+                </div>
+                <div class="bg-cardbg border border-slate-700/60 p-6 rounded-2xl space-y-4">
+                    <label class="block text-sm font-semibold">Enter Topic / Subject:</label>
+                    <input type="text" id="learningInput" placeholder="e.g., Data Structures, Quantum Physics" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent">
+                    <button onclick="runLearningTask()" class="bg-accent text-slate-950 font-bold px-6 py-2.5 rounded-xl hover:bg-sky-400 transition">Generate Study Guide / Quiz</button>
+                    <div id="learningResult" class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-sm hidden whitespace-pre-line"></div>
+                </div>
+            </div>
+
+            <!-- CAREER GUIDANCE -->
+            <div id="module-career" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">🎯 AI Career Guidance System</h2>
+                    <p class="text-sm text-slate-400">Discover top career tracks based on your skills and academic background.</p>
+                </div>
+                <div class="bg-cardbg border border-slate-700/60 p-6 rounded-2xl space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Your Skills & Hobbies:</label>
+                            <textarea id="careerSkills" rows="3" placeholder="e.g., Python, Problem Solving, Graphic Design" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent"></textarea>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-semibold mb-1">Current Education Level:</label>
+                            <input type="text" id="careerEdu" placeholder="e.g., ICS (Computer Science)" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent">
+                        </div>
+                    </div>
+                    <button onclick="runCareerTask()" class="bg-accent text-slate-950 font-bold px-6 py-2.5 rounded-xl hover:bg-sky-400 transition">Analyze Career Pathways</button>
+                    <div id="careerResult" class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-sm hidden whitespace-pre-line"></div>
+                </div>
+            </div>
+
+            <!-- ECO VISION -->
+            <div id="module-eco" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">🌱 AI Eco Vision — Smart Waste Classifier</h2>
+                    <p class="text-sm text-slate-400">Classify waste items and get actionable recycling steps.</p>
+                </div>
+                <div class="bg-cardbg border border-slate-700/60 p-6 rounded-2xl space-y-4">
+                    <label class="block text-sm font-semibold">Describe Waste Item:</label>
+                    <input type="text" id="ecoDesc" placeholder="e.g., Empty Plastic Bottle, Circuit Board" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent">
+                    <button onclick="runEcoTask()" class="bg-accent text-slate-950 font-bold px-6 py-2.5 rounded-xl hover:bg-sky-400 transition">Classify Waste</button>
+                    <div id="ecoResult" class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-sm hidden whitespace-pre-line"></div>
+                </div>
+            </div>
+
+            <!-- BUDGET ADVISOR -->
+            <div id="module-budget" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">💰 AI Budget & Expense Advisor</h2>
+                    <p class="text-sm text-slate-400">Optimize your monthly student or household budget with AI financial tips.</p>
+                </div>
+                <div class="bg-cardbg border border-slate-700/60 p-6 rounded-2xl space-y-4">
+                    <label class="block text-sm font-semibold">Enter Monthly Income & Expenses Summary:</label>
+                    <textarea id="budgetInput" rows="3" placeholder="Income: 50000 PKR, Rent: 15000, Food: 12000, Transport: 5000" class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent"></textarea>
+                    <button onclick="runBudgetTask()" class="bg-accent text-slate-950 font-bold px-6 py-2.5 rounded-xl hover:bg-sky-400 transition">Get Financial Advice</button>
+                    <div id="budgetResult" class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-sm hidden whitespace-pre-line"></div>
+                </div>
+            </div>
+
+            <!-- ACCESSIBILITY & LANGUAGE -->
+            <div id="module-accessibility" class="space-y-6 hidden">
+                <div>
+                    <h2 class="text-2xl font-bold text-accent">🌐 AI Accessibility & Language Assistant</h2>
+                    <p class="text-sm text-slate-400">Translate text, summarize notes, or convert paragraphs.</p>
+                </div>
+                <div class="bg-cardbg border border-slate-700/60 p-6 rounded-2xl space-y-4">
+                    <textarea id="accessInput" rows="4" placeholder="Paste paragraph or notes here..." class="w-full bg-slate-900 border border-slate-700 rounded-xl p-3 focus:outline-none focus:border-accent"></textarea>
+                    <div class="flex space-x-3">
+                        <button onclick="runAccessTask('Translate into fluent Urdu')" class="bg-accent text-slate-950 font-bold px-5 py-2.5 rounded-xl hover:bg-sky-400 transition">Translate to Urdu</button>
+                        <button onclick="runAccessTask('Summarize into clear bullet points')" class="bg-slate-800 text-slate-200 font-bold px-5 py-2.5 rounded-xl hover:bg-slate-700 transition border border-slate-700">Summarize Notes</button>
+                    </div>
+                    <div id="accessResult" class="mt-4 p-4 bg-slate-900/80 rounded-xl border border-slate-800 text-sm hidden whitespace-pre-line"></div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Frontend Script Logic -->
+    <script>
+        function switchModule(id) {
+            ['chat', 'learning', 'career', 'eco', 'budget', 'accessibility'].forEach(m => {
+                document.getElementById(`module-${m}`).classList.add('hidden');
+                document.getElementById(`btn-${m}`).className = "mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition text-slate-300 hover:bg-slate-800 flex items-center space-x-3";
+            });
+            document.getElementById(`module-${id}`).classList.remove('hidden');
+            document.getElementById(`btn-${id}`).className = "mod-btn w-full text-left px-4 py-3 rounded-xl text-sm font-medium transition bg-sky-500/10 text-accent border border-sky-500/30 flex items-center space-x-3";
+        }
+
+        async function callAPI(moduleName, promptText, resultElementId) {
+            const resDiv = document.getElementById(resultElementId);
+            resDiv.classList.remove('hidden');
+            resDiv.innerText = "Processing with AI...";
+
+            const formData = new FormData();
+            formData.append("module", moduleName);
+            formData.append("prompt_text", promptText);
+
+            try {
+                const response = await fetch('/api/generate', {
+                    method: 'POST',
+                    body: formData
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    resDiv.innerText = data.result;
+                } else {
+                    resDiv.innerText = "Error: " + data.detail;
+                }
+            } catch (err) {
+                resDiv.innerText = "Network Error: " + err;
+            }
+        }
+
+        async function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const chatBox = document.getElementById('chatBox');
+            const text = input.value.trim();
+            if(!text) return;
+
+            chatBox.innerHTML += `<div class="bg-sky-500/10 border border-sky-500/20 p-3 rounded-xl text-sm max-w-[80%] ml-auto text-right">${text}</div>`;
+            input.value = '';
+
+            const formData = new FormData();
+            formData.append("module", "Interactive Chat");
+            formData.append("prompt_text", text);
+
+            try {
+                const response = await fetch('/api/generate', { method: 'POST', body: formData });
+                const data = await response.json();
+                if(response.ok) {
+                    chatBox.innerHTML += `<div class="bg-slate-800/80 p-3 rounded-xl text-sm max-w-[80%]">${data.result}</div>`;
+                } else {
+                    chatBox.innerHTML += `<div class="bg-red-500/10 text-red-400 p-3 rounded-xl text-sm max-w-[80%]">Error: ${data.detail}</div>`;
+                }
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } catch (err) {
+                chatBox.innerHTML += `<div class="bg-red-500/10 text-red-400 p-3 rounded-xl text-sm max-w-[80%]">Connection Error</div>`;
+            }
+        }
+
+        function runLearningTask() {
+            const topic = document.getElementById('learningInput').value;
+            callAPI("Smart Learning Assistant", `Create a quiz and study guide for topic: ${topic}`, "learningResult");
+        }
+
+        function runCareerTask() {
+            const skills = document.getElementById('careerSkills').value;
+            const edu = document.getElementById('careerEdu').value;
+            callAPI("Career Guidance", `Analyze student with education '${edu}' and skills '${skills}'. Recommend top 3 career pathways and action plan.`, "careerResult");
+        }
+
+        async function runEcoTask() {
+            const desc = document.getElementById('ecoDesc').value;
+            const resDiv = document.getElementById('ecoResult');
+            resDiv.classList.remove('hidden');
+            resDiv.innerText = "Analyzing waste item...";
+
+            const formData = new FormData();
+            formData.append("description", desc);
+
+            const res = await fetch('/api/classify-waste', { method: 'POST', body: formData });
+            const data = await res.json();
+            resDiv.innerText = res.ok ? data.result : "Error: " + data.detail;
+        }
+
+        function runBudgetTask() {
+            const text = document.getElementById('budgetInput').value;
+            callAPI("Budget Advisor", `Provide financial and savings advice for this budget: ${text}`, "budgetResult");
+        }
+
+        function runAccessTask(action) {
+            const text = document.getElementById('accessInput').value;
+            callAPI("Accessibility Assistant", `${action} for the following text:\n\n${text}`, "accessResult");
+        }
+    </script>
+</body>
+</html>
